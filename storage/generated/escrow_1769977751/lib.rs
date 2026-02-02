@@ -1,0 +1,105 @@
+use anchor_lang::prelude::*;
+
+declare_id!("11111111111111111111111111111111");
+
+#[program]
+pub mod escrow {
+    use super::*;
+
+    pub fn initialize_escrow(
+        ctx: Context<InitializeEscrow>,
+        amount: u64,
+    ) -> Result<()> {
+        let escrow = &mut ctx.accounts.escrow;
+
+        escrow.initializer = ctx.accounts.initializer.key();
+        escrow.amount = amount;
+        escrow.is_active = true;
+
+        let ix = anchor_lang::solana_program::system_instruction::transfer(
+            &ctx.accounts.initializer.key(),
+            &ctx.accounts.vault.key(),
+            amount,
+        );
+
+        anchor_lang::solana_program::program::invoke(
+            &ix,
+            &[
+                ctx.accounts.initializer.to_account_info(),
+                ctx.accounts.vault.to_account_info(),
+                ctx.accounts.system_program.to_account_info(),
+            ],
+        )?;
+
+        Ok(())
+    }
+
+    pub fn release_escrow(ctx: Context<CloseEscrow>) -> Result<()> {
+        let escrow = &mut ctx.accounts.escrow;
+        require!(escrow.is_active, EscrowError::EscrowInactive);
+
+        escrow.is_active = false;
+
+        **ctx.accounts.initializer.to_account_info().lamports.borrow_mut() +=
+            ctx.accounts.vault.to_account_info().lamports();
+        **ctx.accounts.vault.to_account_info().lamports.borrow_mut() = 0;
+
+        Ok(())
+    }
+
+    pub fn cancel_escrow(ctx: Context<CloseEscrow>) -> Result<()> {
+        let escrow = &mut ctx.accounts.escrow;
+        require!(escrow.is_active, EscrowError::EscrowInactive);
+
+        escrow.is_active = false;
+
+        **ctx.accounts.initializer.to_account_info().lamports.borrow_mut() +=
+            ctx.accounts.vault.to_account_info().lamports();
+        **ctx.accounts.vault.to_account_info().lamports.borrow_mut() = 0;
+
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct InitializeEscrow<'info> {
+    #[account(mut)]
+    pub initializer: Signer<'info>,
+
+    #[account(
+        init,
+        payer = initializer,
+        space = 8 + 32 + 8 + 1
+    )]
+    pub escrow: Account<'info, EscrowState>,
+
+    #[account(mut)]
+    pub vault: SystemAccount<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct CloseEscrow<'info> {
+    #[account(mut, has_one = initializer)]
+    pub escrow: Account<'info, EscrowState>,
+
+    #[account(mut)]
+    pub initializer: Signer<'info>,
+
+    #[account(mut)]
+    pub vault: SystemAccount<'info>,
+}
+
+#[account]
+pub struct EscrowState {
+    pub initializer: Pubkey,
+    pub amount: u64,
+    pub is_active: bool,
+}
+
+#[error_code]
+pub enum EscrowError {
+    #[msg("Escrow is no longer active")]
+    EscrowInactive,
+}
