@@ -1,0 +1,6 @@
+[programs.localnet]
+escrow = "{{PROGRAM_ID}}"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"

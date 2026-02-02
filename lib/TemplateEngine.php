@@ -20,10 +20,25 @@ class TemplateEngine
     {
         return self::generateFromTemplate('multisig');
     }
-    
+
     public static function generateSubscription(): string
     {
         return self::generateFromTemplate('subscription');
+    }
+
+    public static function generateStaking(): string
+    {
+        return self::generateFromTemplate('staking');
+    }
+    
+    public static function generateRewardDistributor(): string
+    {
+        return self::generateFromTemplate('reward_distributor');
+    }
+
+    public static function generateDeviceRegistry(): string
+    {
+        return self::generateFromTemplate('device_registry');
     }
 
     /* ===============================
@@ -46,7 +61,8 @@ class TemplateEngine
         }
 
         self::copyDirectory($templateDir, $outputDir, [
-            '{{PROGRAM_ID}}' => $programId
+            '{{PROGRAM_ID}}'   => $programId,
+            '{{PROGRAM_NAME}}' => $type
         ]);
 
         return $outputDir;
@@ -80,13 +96,11 @@ class TemplateEngine
                     throw new Exception('Failed to read file: ' . $item->getPathname());
                 }
 
-                if (!empty($replacements)) {
-                    $content = str_replace(
-                        array_keys($replacements),
-                        array_values($replacements),
-                        $content
-                    );
-                }
+                $content = str_replace(
+                    array_keys($replacements),
+                    array_values($replacements),
+                    $content
+                );
 
                 if (file_put_contents($targetPath, $content) === false) {
                     throw new Exception('Failed to write file: ' . $targetPath);
@@ -101,7 +115,7 @@ class TemplateEngine
 
     private static function generateProgramId(): string
     {
-        // Placeholder — replaced after deployment
-        return '11111111111111111111111111111111';
+        // Placeholder – replaced after anchor deploy
+        return '{{PROGRAM_ID}}';
     }
 }

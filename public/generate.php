@@ -56,6 +56,18 @@ try {
         case 'subscription':
             $path = TemplateEngine::generateSubscription();
             break;
+            
+        case 'staking':
+            $path = TemplateEngine::generateStaking();
+            break;
+            
+        case 'reward_distributor':
+            $path = TemplateEngine::generateRewardDistributor();
+            break;
+            
+        case 'device_registry':
+            $path = TemplateEngine::generateDeviceRegistry();
+            break;
 
         default:
             throw new Exception('Invalid template selected');

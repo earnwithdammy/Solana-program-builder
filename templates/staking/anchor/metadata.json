@@ -1,0 +1,8 @@
+{
+  "name": "Staking Program",
+  "category": "DeFi",
+  "description": "SOL staking smart contract with user stake tracking",
+  "difficulty": "Intermediate",
+  "network": "Solana",
+  "monetization": "Pro"
+}

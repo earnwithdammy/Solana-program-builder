@@ -1,0 +1,14 @@
+[package]
+name = "device_registry"
+version = "0.1.0"
+description = "Production-ready device registry for DePIN"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+no-entrypoint = []
+
+[dependencies]
+anchor-lang = "0.29.0"

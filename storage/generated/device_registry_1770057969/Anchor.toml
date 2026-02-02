@@ -1,0 +1,6 @@
+[programs.localnet]
+device_registry = "{{PROGRAM_ID}}"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"

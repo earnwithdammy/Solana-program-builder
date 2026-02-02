@@ -1,0 +1,14 @@
+[package]
+name = "staking"
+version = "0.1.0"
+description = "Production-ready staking program"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+no-entrypoint = []
+
+[dependencies]
+anchor-lang = "0.29.0"

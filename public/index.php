@@ -272,6 +272,9 @@
         <select name="template" required>
             <option value="">Select template</option>
             <option value="escrow">Escrow</option>
+            <option value="staking">Staking</option>
+            <option value="reward_distributor">Reward_distributor</option>
+            <option value="device_registry">Device_registry</option>
             <option value="vault">Vault</option>
             <option value="multisig">Multisig</option>
             <option value="subscription">Subscription</option>
