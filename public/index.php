@@ -209,6 +209,57 @@
             font-size: 13px;
             color: #6b7280;
         }
+
+        /* ---------- NAV DROPDOWN ---------- */
+
+        nav {
+            position: relative;
+        }
+
+        .nav-toggle {
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #9ca3af;
+        }
+
+        .nav-toggle:hover {
+            color: #14F195;
+        }
+
+        .nav-menu {
+            position: absolute;
+            right: 0;
+            top: 36px;
+            min-width: 160px;
+            background: #020617;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 8px 0;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: all 0.2s ease;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 10px 16px;
+            font-size: 14px;
+            color: #e5e7eb;
+            text-decoration: none;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(20,241,149,0.08);
+            color: #14F195;
+        }
+
+        nav:hover .nav-menu {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -216,6 +267,14 @@
 
 <header>
     <div class="logo">Solana<span>Builder</span></div>
+
+    <nav>
+        <span class="nav-toggle">Menu ▾</span>
+        <div class="nav-menu">
+            <a href="/public/index.php">Home</a>
+            <a href="/public/docs.php">Documentation</a>
+        </div>
+    </nav>
 </header>
 
 <section class="hero">
